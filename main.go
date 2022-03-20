@@ -8,8 +8,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func main(){
-
+func main() {
 
 	config, err := clientcmd.BuildConfigFromFlags("", clientcmd.RecommendedHomeFile)
 	if nil != err {
@@ -27,6 +26,12 @@ func main(){
 	infoFactory := informers.NewSharedInformerFactory(clientset, 0)
 	servicesInfo := infoFactory.Core().V1().Services()
 	ingressInfo := infoFactory.Networking().V1().Ingresses()
+	//ForCrd
+	//geInfor,err := infoFactory.ForResource()
+	//if nil != err {
+	//	panic(err)
+	//}
+
 	con := controller.NewController(clientset, servicesInfo, ingressInfo)
 	stopChan := make(chan struct{})
 	infoFactory.Start(stopChan)
